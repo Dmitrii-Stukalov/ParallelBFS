@@ -5,6 +5,7 @@ import java.util.concurrent.ExecutionException;
 public class Main {
 	private static final int SIZE = 500;
 	private static final int NODES = SIZE * SIZE * SIZE;
+	private static final int RUNS = 5;
 
 	public static void main(String[] args) throws InterruptedException, ExecutionException {
 
@@ -29,18 +30,39 @@ public class Main {
 				}
 			}
 		}
-		SequentialBFS sequentialBFS = new SequentialBFS();
-		long beforeSequential = System.currentTimeMillis();
-		List<Integer> sequentialResult = sequentialBFS.bfs(nodes);
-		long afterSequential = System.currentTimeMillis();
-		System.out.printf("Sequential time %d ms", afterSequential - beforeSequential);
+		for (int i = 0; i < RUNS; i++) {
+			System.out.printf("===== RUN #%d =====\n", i + 1);
+
+			SequentialBFS sequentialBFS = new SequentialBFS();
+			long beforeSequential = System.currentTimeMillis();
+			List<Integer> sequentialResult = sequentialBFS.bfs(nodes);
+			long afterSequential = System.currentTimeMillis();
+			System.out.printf("Sequential time %d ms\n", afterSequential - beforeSequential);
 
 
-		ParallelBFS parallelBFS = new ParallelBFS();
-		long beforeParallel = System.currentTimeMillis();
-		List<Integer> parallelResult = parallelBFS.bfs(nodes);
-		long afterParallel = System.currentTimeMillis();
-		System.out.printf("Parallel time %d ms", afterParallel - beforeParallel);
+			ParallelBFS parallelBFS = new ParallelBFS();
+			long beforeParallel = System.currentTimeMillis();
+			List<Integer> parallelResult = parallelBFS.bfs(nodes);
+			long afterParallel = System.currentTimeMillis();
+			System.out.printf("Parallel time %d ms\n", afterParallel - beforeParallel);
+
+			checkResult(sequentialResult, parallelResult);
+		}
+	}
+
+	private static void checkResult(List<Integer> sequentialResult, List<Integer> parallelResult) {
+		if (sequentialResult.size() != parallelResult.size()) {
+			System.err.println("ERROR Results of different sizes");
+			return;
+		}
+		for (int i = 0; i < sequentialResult.size(); i++) {
+			if (!sequentialResult.get(i).equals(parallelResult.get(i))) {
+				System.err.printf("ERROR Results not equal on index %d sequential=%d parallel=%d\n",
+						i, sequentialResult.get(i), parallelResult.get(i));
+				return;
+			}
+		}
+		System.out.println("Results are equal");
 	}
 
 	private static int flatCoordinates(int[] dimensions) {

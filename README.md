@@ -11,8 +11,8 @@ To default run shell script is available:
 
 | Algorithm  | Run 1   | Run 2   | Run 3   | Run 4   | Run 5   | Avg     |
 |------------|---------|---------|---------|---------|---------|---------|
-| Parallel   | 35622ms | 34824ms | 36621ms | 35698ms | 33684ms | 35298ms |
-| Sequential | 78369ms | 76994ms | 77399ms | 80311ms | 76853ms | 78213ms |
+| Parallel   | 26403ms | 27192ms | 23601ms | 23614ms | 24531ms | 25068ms |
+| Sequential | 76545ms | 75816ms | 77238ms | 82046ms | 76711ms | 77671ms |
 
 ### Acceleration coefficient:
-* Sequential / Parallel ~ 2.2
+* Sequential / Parallel ~ 3.1
